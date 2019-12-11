@@ -1,0 +1,24 @@
+{
+    "name": "homeceu/certificate-manager",
+    "description": "Service for managing HomeCEU Certificates",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dan McAdams",
+            "email": "dan@homeceu.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "HomeCEU\\Certificate\\": "src/Certificate"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HomeCEU\\Certificate\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.3"
+    }
+}
