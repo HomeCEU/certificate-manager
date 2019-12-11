@@ -20,5 +20,11 @@
     },
     "require": {
         "php": "^7.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "scripts": {
+        "tests": [ "vendor/bin/phpunit", "vendor/bin/phpstan analyse src --level=7" ]
     }
 }
