@@ -2,7 +2,20 @@ language: php
 os: linux
 
 php:
-  - '7.3'
+  - 7.3
+  - 7.4
+  - nightly
+
+matrix:
+  allow_failures:
+    - php: nightly
+  fast_finish: true
 
 install:
   - "composer install"
+
+before_script:
+  - mkdir -p build/logs
+
+script:
+  - phpunit --coverage-clover build/logs/clover.xml
