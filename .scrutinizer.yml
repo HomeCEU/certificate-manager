@@ -4,8 +4,6 @@ build:
       version: 7.3
 
   tests:
-    before:
-      - command: 'composer setup'
     override:
       - php-scrutinizer-run
       - use_website_config: false
