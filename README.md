@@ -1,7 +1,13 @@
-# homeceu/certificate-manager [![build status](https://travis-ci.org/HomeCEU/certificate-manager.svg?branch=master)](https://travis-ci.org/HomeCEU/certificate-manager)
+## homeceu/certificate-manager  
+[![build status](https://travis-ci.org/HomeCEU/certificate-manager.svg?branch=master)](https://travis-ci.org/HomeCEU/certificate-manager)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/HomeCEU/certificate-manager/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/HomeCEU/certificate-manager/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/HomeCEU/certificate-manager/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/HomeCEU/certificate-manager/?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### Installation
+#### Installation
 
-More than likely, you won't have the correct version of PHP on your system, so run composer install with the `--ignore-platform-reqs` flag
+`git clone git@github.com:HomeCEU/certificate-manager.git`  
   
-`composer install --ignore-platform-reqs`
+`cd certificate-manager`
+    
+`composer install`
