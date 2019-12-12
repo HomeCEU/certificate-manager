@@ -19,7 +19,8 @@
         }
     },
     "require": {
-        "php": "^7.3"
+        "php": "^7.3",
+        "zordius/lightncandy": "^1.2"
     },
     "config": {
         "platform": {
