@@ -1,4 +1,4 @@
-# homeceu/certificate-manager [![build status](https://travis-ci.org/HomeCEU/certificate-manager.svg?branch=master)](https://travis-ci.org/HomeCEU/certificate-manager.svg?branch=master)
+# homeceu/certificate-manager [![build status](https://travis-ci.org/HomeCEU/certificate-manager.svg?branch=master)](https://travis-ci.org/HomeCEU/certificate-manager)
 
 ### Installation
 
