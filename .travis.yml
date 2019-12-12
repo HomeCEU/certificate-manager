@@ -1,4 +1,6 @@
 language: php
+os: linux
+
 php:
   - '7.3'
 
