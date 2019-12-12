@@ -4,10 +4,11 @@ build:
       version: 7.3
 
   tests:
+    before:
+      - command: 'composer setup'
     override:
       - php-scrutinizer-run
-      -
-        use_website_config: false
+      - use_website_config: false
         command: vendor/bin/phpunit --coverage-clover clover.xml
         coverage:
           file: coverage.clover

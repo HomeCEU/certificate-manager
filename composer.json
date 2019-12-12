@@ -27,6 +27,7 @@
     },
     "scripts": {
         "post-install-cmd": "php -r \"if (!is_file('phpunit.xml')) { copy('phpunit.xml.dist', 'phpunit.xml'); }\"",
+        "setup": "@post-install-cmd",
         "analyze": [ "vendor/bin/phpstan analyse src --level=7" ]
     }
 }
