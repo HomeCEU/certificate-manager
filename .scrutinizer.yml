@@ -6,6 +6,10 @@ build:
   tests:
     override:
       -
+        command: phpcs-run
+        use_website_config: false
+      - php-scrutinizer-run
+      -
         command: vendor/bin/phpunit --coverage-clover clover.xml
         coverage:
           file: clover.xml
