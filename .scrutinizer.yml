@@ -9,7 +9,7 @@ build:
     override:
       - php-scrutinizer-run
       - use_website_config: false
-        command: vendor/bin/phpunit --coverage-clover coverage.clover
+        command: 'vendor/bin/phpunit --coverage-clover coverage.clover'
         coverage:
           file: coverage.clover
           format: php-clover
