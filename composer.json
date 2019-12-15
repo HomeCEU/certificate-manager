@@ -33,6 +33,7 @@
     },
     "scripts": {
         "post-install-cmd": "php -r \"if (!is_file('phpunit.xml')) { copy('phpunit.xml.dist', 'phpunit.xml'); }\"",
-        "analyze": [ "vendor/bin/phpstan analyse src --level=7" ]
+        "analyze": "vendor/bin/phpstan analyse src --level=7",
+        "analyse": "@analyze"
     }
 }
