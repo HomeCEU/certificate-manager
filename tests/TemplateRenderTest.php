@@ -5,6 +5,7 @@ namespace HomeCEU\Certificate\Tests;
 
 
 use HomeCEU\Certificate\Renderer;
+use LightnCandy\Flags;
 use PHPUnit\Framework\TestCase;
 
 class TemplateRenderTest extends TestCase
@@ -21,7 +22,7 @@ class TemplateRenderTest extends TestCase
         $this->renderer->setTemplate("Hello, {{ name }}!");
 
         $name = 'Dan';
-        $this->assertEquals("Hello, {$name}!", $this->renderer->render(['name' => $name]));
+        $this->assertEquals("Hello, {$name}!", $this->render(['name' => $name]));
     }
 
     public function testLoop(): void
@@ -31,6 +32,25 @@ class TemplateRenderTest extends TestCase
 
         $this->renderer->setTemplate($template);
 
-        $this->assertEquals(implode('', $names), $this->renderer->render(['names' => $names]));
+        $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
     }
+
+    public function testSetFlags(): void
+    {
+        $names = ['test_1', 'test_2', 'test_3'];
+        $template = '{{#each names}}{{this}}{{/each}}';
+
+        $this->renderer->setTemplate($template);
+        $this->renderer->setFlags(Flags::FLAG_BESTPERFORMANCE);
+
+        $this->assertEquals('', $this->render(['names' => $names]));
+
+        $this->renderer->setFlags(Flags::FLAG_HANDLEBARSJS);
+        $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
+    }
+
+    protected function render(array $data)
+    {
+        return $this->renderer->render($data);
+}
 }

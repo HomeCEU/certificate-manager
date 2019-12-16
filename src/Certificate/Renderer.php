@@ -10,15 +10,23 @@ use LightnCandy\LightnCandy;
 class Renderer
 {
     private $template;
+    private $flags = Flags::FLAG_HANDLEBARSJS;
+
+    public function setFlags(int $flags): void
+    {
+        $this->flags = $flags;
+    }
 
     public function setTemplate(string $template)
     {
-        $this->template = LightnCandy::compile($template, ['flags' => Flags::FLAG_HANDLEBARS]);
+        $this->template = $template;
     }
 
     public function render(array $data): ?string
     {
-        $renderer = LightnCandy::prepare($this->template);
+        $compiledTemplate = LightnCandy::compile($this->template, ['flags' => $this->flags]);
+        $renderer = LightnCandy::prepare($compiledTemplate);
+
         return $renderer($data);
     }
 }
