@@ -5,6 +5,7 @@ namespace HomeCEU\Certificate\Tests;
 
 
 use HomeCEU\Certificate\Renderer;
+use HomeCEU\Certificate\RenderHelper;
 use LightnCandy\Flags;
 use PHPUnit\Framework\TestCase;
 
@@ -43,6 +44,15 @@ class TemplateRenderTest extends TestCase
         $this->certificate->setTemplate($template);
 
         $this->assertEquals(implode('', array_column($states, 'name')), $this->render(['states' => $states]));
+    }
+
+    public function testExtractPartials(): void
+    {
+        $template = 'some other text {{> partial_one }} {{ not a partial }} {{> partial_two }} some text';
+        $this->certificate->setTemplate($template);
+
+        $matches = RenderHelper::extractExpectedPartialsFrom($template);
+        $this->assertEquals(['partial_one', 'partial_two'], $matches);
     }
 
     public function testSetFlags(): void
