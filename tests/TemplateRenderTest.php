@@ -6,21 +6,20 @@ namespace HomeCEU\Certificate\Tests;
 
 use HomeCEU\Certificate\Renderer;
 use LightnCandy\Flags;
-use LightnCandy\LightnCandy;
 use PHPUnit\Framework\TestCase;
 
 class TemplateRenderTest extends TestCase
 {
-    private $renderer;
+    private $certificate;
 
     protected function setUp(): void
     {
-        $this->renderer = new Renderer();
+        $this->certificate = new Renderer();
     }
 
-    public function testLightncandy(): void
+    public function testSimpleString(): void
     {
-        $this->renderer->setTemplate("Hello, {{ name }}!");
+        $this->certificate->setTemplate("Hello, {{ name }}!");
 
         $name = 'Dan';
         $this->assertEquals("Hello, {$name}!", $this->render(['name' => $name]));
@@ -31,7 +30,7 @@ class TemplateRenderTest extends TestCase
         $names = ['test_1', 'test_2', 'test_3'];
         $template = '{{#each names}}{{this}}{{/each}}';
 
-        $this->renderer->setTemplate($template);
+        $this->certificate->setTemplate($template);
 
         $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
     }
@@ -41,7 +40,7 @@ class TemplateRenderTest extends TestCase
         $states   = [['name' => 'Texas'], ['name' => 'Florida'], ['name' => 'New Mexico']];
         $template = '{{#each states as |state|}}{{state.name}}{{/each}}';
 
-        $this->renderer->setTemplate($template);
+        $this->certificate->setTemplate($template);
 
         $this->assertEquals(implode('', array_column($states, 'name')), $this->render(['states' => $states]));
     }
@@ -51,12 +50,12 @@ class TemplateRenderTest extends TestCase
         $names = ['test_1', 'test_2', 'test_3'];
         $template = '{{#each names}}{{this}}{{/each}}';
 
-        $this->renderer->setTemplate($template);
-        $this->renderer->setFlags(Flags::FLAG_BESTPERFORMANCE);
+        $this->certificate->setTemplate($template);
+        $this->certificate->setFlags(Flags::FLAG_BESTPERFORMANCE);
 
         $this->assertEquals('', $this->render(['names' => $names]));
 
-        $this->renderer->setFlags(Flags::FLAG_HANDLEBARSJS);
+        $this->certificate->setFlags(Flags::FLAG_HANDLEBARSJS);
         $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
     }
 
@@ -65,8 +64,8 @@ class TemplateRenderTest extends TestCase
         $template = '{{> partial_test }}';
         $partial  = '{{name}}';
 
-        $this->renderer->setTemplate($template);
-        $this->renderer->addPartial('partial_test', $partial);
+        $this->certificate->setTemplate($template);
+        $this->certificate->addPartial('partial_test', $partial);
 
         $name = 'Jules Winfield';
         $this->assertEquals($name, $this->render(['name' => $name]));
@@ -74,6 +73,6 @@ class TemplateRenderTest extends TestCase
 
     protected function render(array $data): ?string
     {
-        return $this->renderer->render($data);
+        return $this->certificate->render($data);
     }
 }
