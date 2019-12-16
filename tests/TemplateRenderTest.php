@@ -53,14 +53,13 @@ class TemplateRenderTest extends TestCase
     public function testRenderPartial(): void
     {
         $template = '{{> partial_test }}';
-        $partial = '{{name}}';
+        $partial  = '{{name}}';
 
-        $php = LightnCandy::compile($template, [
-            'partials' => ['partial_test' => $partial]
-        ]);
+        $this->renderer->setTemplate($template);
+        $this->renderer->addPartial('partial_test', $partial);
 
-        $renderer = LightnCandy::prepare($php);
-        $this->assertEquals('dan', $renderer(['name' => 'dan']));
+        $name = 'Jules Winfield';
+        $this->assertEquals($name, $this->render(['name' => $name]));
     }
 
     protected function render(array $data): ?string

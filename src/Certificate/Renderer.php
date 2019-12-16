@@ -10,11 +10,17 @@ use LightnCandy\LightnCandy;
 class Renderer
 {
     private $template;
-    private $flags = Flags::FLAG_HANDLEBARSJS;
+    private $partials = [];
+    private $flags = Flags::FLAG_HANDLEBARS;
 
     public function setFlags(int $flags): void
     {
         $this->flags = $flags;
+    }
+
+    public function addPartial(string $name, string $partial): void
+    {
+        $this->partials[$name] = $partial;
     }
 
     public function setTemplate(string $template)
@@ -24,7 +30,12 @@ class Renderer
 
     public function render(array $data): ?string
     {
-        $compiledTemplate = LightnCandy::compile($this->template, ['flags' => $this->flags]);
+        $options = ['flags' => $this->flags];
+
+        if (!empty($this->partials)) {
+            $options = array_merge($options, ['partials' => $this->partials]);
+        }
+        $compiledTemplate = LightnCandy::compile($this->template, $options);
         $renderer = LightnCandy::prepare($compiledTemplate);
 
         return $renderer($data);
