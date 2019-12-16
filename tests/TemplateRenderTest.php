@@ -36,6 +36,16 @@ class TemplateRenderTest extends TestCase
         $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
     }
 
+    public function testNestedLoop(): void
+    {
+        $states   = [['name' => 'Texas'], ['name' => 'Florida'], ['name' => 'New Mexico']];
+        $template = '{{#each states as |state|}}{{state.name}}{{/each}}';
+
+        $this->renderer->setTemplate($template);
+
+        $this->assertEquals(implode('', array_column($states, 'name')), $this->render(['states' => $states]));
+    }
+
     public function testSetFlags(): void
     {
         $names = ['test_1', 'test_2', 'test_3'];
