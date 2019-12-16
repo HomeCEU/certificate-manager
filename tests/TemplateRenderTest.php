@@ -6,6 +6,7 @@ namespace HomeCEU\Certificate\Tests;
 
 use HomeCEU\Certificate\Renderer;
 use LightnCandy\Flags;
+use LightnCandy\LightnCandy;
 use PHPUnit\Framework\TestCase;
 
 class TemplateRenderTest extends TestCase
@@ -49,8 +50,21 @@ class TemplateRenderTest extends TestCase
         $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
     }
 
-    protected function render(array $data)
+    public function testRenderPartial(): void
+    {
+        $template = '{{> partial_test }}';
+        $partial = '{{name}}';
+
+        $php = LightnCandy::compile($template, [
+            'partials' => ['partial_test' => $partial]
+        ]);
+
+        $renderer = LightnCandy::prepare($php);
+        $this->assertEquals('dan', $renderer(['name' => 'dan']));
+    }
+
+    protected function render(array $data): ?string
     {
         return $this->renderer->render($data);
-}
+    }
 }
