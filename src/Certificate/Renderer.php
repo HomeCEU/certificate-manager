@@ -23,7 +23,7 @@ class Renderer
         $this->partials[$name] = $partial;
     }
 
-    public function setTemplate(string $template)
+    public function setTemplate(string $template): void
     {
         $this->template = $template;
     }
