@@ -28,7 +28,7 @@ class TemplateRenderTest extends TestCase
 
     public function testLoop(): void
     {
-        $names = ['test_1', 'test_2', 'test_3'];
+        $names    = ['test_1', 'test_2', 'test_3'];
         $template = '{{#each names}}{{this}}{{/each}}';
 
         $this->certificate->setTemplate($template);
@@ -57,7 +57,7 @@ class TemplateRenderTest extends TestCase
 
     public function testSetFlags(): void
     {
-        $names = ['test_1', 'test_2', 'test_3'];
+        $names    = ['test_1', 'test_2', 'test_3'];
         $template = '{{#each names}}{{this}}{{/each}}';
 
         $this->certificate->setTemplate($template);
@@ -83,28 +83,28 @@ class TemplateRenderTest extends TestCase
 
     public function testRenderPartialLoop(): void
     {
-        $data = [
-            'course' => [
+        $data      = [
+            'course'    => [
                 'name' => 'Test Course'
             ],
-            'states' => [
-                [
-                    'name' => 'Texas',
-                    'code' => 'TX'
-                ],
-                [
-                    'name' => 'Florida',
-                    'code' => 'FL'
-                ]
+            'student' => [
+                'name' => 'Test Student'
+            ],
+            'approvals' => [
+                'pt' => ['states' => [['name' => 'Texas', 'code' => 'TX'], ['name' => 'Florida', 'code' => 'FL']]],
+                'mt' => ['states' => [['name' => 'Ohio', 'code' => 'OH'], ['name' => 'New Mexico', 'code' => 'NM']]]
             ]
         ];
-        $template = '{{course.name}} PT: {{>states_partial}}';
-        $partial = '{{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}';
+        $template  = '{{course.name}} taken by: {{student.name}} {{>pt_partial}} {{>atc_partial}}';
+
+        $ptPartial = "{{#with approvals.pt}}PT: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
+        $atcPartial = "{{#with approvals.atc}}ATC: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
 
         $this->certificate->setTemplate($template);
-        $this->certificate->addPartial('states_partial', $partial);
+        $this->certificate->addPartial('pt_partial', $ptPartial);
+        $this->certificate->addPartial('atc_partial', $atcPartial);
 
-        $expected = 'Test Course PT: Texas, TX; Florida, FL;';
+        $expected = 'Test Course taken by: Test Student PT: Texas, TX; Florida, FL;';
         $this->assertEquals($expected, $this->certificate->render($data));
     }
 
