@@ -51,7 +51,7 @@ class TemplateRenderTest extends TestCase
         $template = 'some other text {{> partial_one }} {{ not a partial }} {{> partial_two }} some text';
         $this->certificate->setTemplate($template);
 
-        $matches = RenderHelper::extractExpectedPartialsFrom($template);
+        $matches = RenderHelper::extractExpectedPartialsFromTemplate($template);
         $this->assertEquals(['partial_one', 'partial_two'], $matches);
     }
 
@@ -79,6 +79,33 @@ class TemplateRenderTest extends TestCase
 
         $name = 'Jules Winfield';
         $this->assertEquals($name, $this->render(['name' => $name]));
+    }
+
+    public function testRenderPartialWithNestedLoop(): void
+    {
+        $data = [
+            'course' => [
+                'name' => 'Test Course'
+            ],
+            'states' => [
+                [
+                    'name' => 'Texas',
+                    'code' => 'TX'
+                ],
+                [
+                    'name' => 'Florida',
+                    'code' => 'FL'
+                ]
+            ]
+        ];
+        $template = '{{course.name}} PT: {{>states_partial}}';
+        $partial = '{{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}';
+
+        $this->certificate->setTemplate($template);
+        $this->certificate->addPartial('states_partial', $partial);
+
+        $expected = 'Test Course PT: Texas, TX; Florida, FL;';
+        $this->assertEquals($expected, $this->certificate->render($data));
     }
 
     protected function render(array $data): ?string
