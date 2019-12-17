@@ -30,7 +30,7 @@ class Renderer
 
     public function render(array $data): ?string
     {
-        $options = ['flags' => $this->flags];
+        $options = ['flags' => $this->flags | Flags::FLAG_ERROR_EXCEPTION];
 
         if (!empty($this->partials)) {
             $options = array_merge($options, ['partials' => $this->partials]);
@@ -38,6 +38,6 @@ class Renderer
         $compiledTemplate = LightnCandy::compile($this->template, $options);
         $renderer = LightnCandy::prepare($compiledTemplate);
 
-        return $renderer($data);
+        return trim($renderer($data));
     }
 }
