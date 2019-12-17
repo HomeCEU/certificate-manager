@@ -36,7 +36,7 @@ class TemplateRenderTest extends TestCase
         $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
     }
 
-    public function testNestedLoop(): void
+    public function testLoopWithNamedValue(): void
     {
         $states   = [['name' => 'Texas'], ['name' => 'Florida'], ['name' => 'New Mexico']];
         $template = '{{#each states as |state|}}{{state.name}}{{/each}}';
@@ -81,7 +81,7 @@ class TemplateRenderTest extends TestCase
         $this->assertEquals($name, $this->render(['name' => $name]));
     }
 
-    public function testRenderPartialWithNestedLoop(): void
+    public function testRenderPartialLoop(): void
     {
         $data = [
             'course' => [
