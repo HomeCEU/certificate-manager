@@ -10,8 +10,11 @@ use LightnCandy\LightnCandy;
 
 class Renderer
 {
+    /** @var string */
     private $template;
+    /** @var Partial[] */
     private $partials = [];
+    /** @var int */
     private $flags = Flags::FLAG_HANDLEBARS;
 
     public function setFlags(int $flags): void
@@ -21,18 +24,18 @@ class Renderer
 
     public function addPartial(Partial $partial): void
     {
-        $this->partials[$partial->name] = $partial->template;
+        $this->partials[] = $partial;
     }
 
     public function setPartials(array $partials): void
     {
-        $this->partials = [];
+        $this->clearPartials();
 
         foreach ($partials as $partial) {
             if (!($partial instanceof Partial)) {
                 throw new NonPartialException("You must provide an array of Partial(s)");
             }
-            $this->partials[$partial->name] = $partial->template;
+            $this->addPartial($partial);
         }
     }
 
@@ -46,7 +49,7 @@ class Renderer
         return $this->renderCompiledTemplate($this->compileTemplate(), $data);
     }
 
-    protected function compileTemplate()
+    private function compileTemplate()
     {
         return LightnCandy::compile($this->template, $this->buildOptions());
     }
@@ -74,8 +77,22 @@ class Renderer
         $options = ['flags' => $this->flags | Flags::FLAG_ERROR_EXCEPTION];
 
         if (!empty($this->partials)) {
-            $options = array_merge($options, ['partials' => $this->partials]);
+            $options = array_merge($options, $this->buildPartialsOption());
         }
         return $options;
+    }
+
+    private function buildPartialsOption()
+    {
+        $partials = [];
+        foreach ($this->partials as $partial) {
+            $partials[$partial->name] = $partial->template;
+        }
+        return ['partials' => $partials];
+    }
+
+    private function clearPartials(): void
+    {
+        $this->partials = [];
     }
 }
