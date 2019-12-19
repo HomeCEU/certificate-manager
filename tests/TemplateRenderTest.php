@@ -103,7 +103,7 @@ class TemplateRenderTest extends TestCase
     public function testNoTemplateProvidedThrowException(): void
     {
         $this->expectException(NoTemplateProvidedException::class);
-        $output = $this->certificate->render([]);
+        $this->certificate->render([]);
     }
 
     public function testSetPartialsWithArrayOfNonPartialsThrowsException(): void
