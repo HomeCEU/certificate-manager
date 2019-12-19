@@ -4,6 +4,7 @@
 namespace HomeCEU\Certificate;
 
 
+use HomeCEU\Certificate\Exception\NonPartialException;
 use LightnCandy\Flags;
 use LightnCandy\LightnCandy;
 
@@ -21,6 +22,18 @@ class Renderer
     public function addPartial(Partial $partial): void
     {
         $this->partials[$partial->name] = $partial->template;
+    }
+
+    public function setPartials(array $partials): void
+    {
+        $this->partials = [];
+
+        foreach ($partials as $partial) {
+            if (!($partial instanceof Partial)) {
+                throw new NonPartialException("You must provide an array of Partial(s)");
+            }
+            $this->partials[$partial->name] = $partial->template;
+        }
     }
 
     public function setTemplate(string $template): void

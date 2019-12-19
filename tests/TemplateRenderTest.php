@@ -4,6 +4,7 @@
 namespace HomeCEU\Certificate\Tests;
 
 
+use HomeCEU\Certificate\Exception\NonPartialException;
 use HomeCEU\Certificate\Partial;
 use HomeCEU\Certificate\Renderer;
 use HomeCEU\Certificate\RenderHelper;
@@ -82,13 +83,35 @@ class TemplateRenderTest extends TestCase
         $this->assertEquals($name, $this->render(['name' => $name]));
     }
 
+    public function testSetPartials(): void
+    {
+        $template = '{{> partial_test_1 }} {{> partial_test_2}}';
+
+        $this->certificate->setTemplate($template);
+        $this->certificate->setPartials([
+                new Partial('partial_test_1', '{{name}}'),
+                new Partial('partial_test_2', '{{age}}')
+        ]);
+        $data = [
+            'name' => 'Dan',
+            'age'  => '36'
+        ];
+        $this->assertEquals('Dan 36', $this->certificate->render($data));
+    }
+
+    public function testSetPartialsWithArrayOfNonPartialsThrowsException(): void
+    {
+        $this->expectException(NonPartialException::class);
+        $this->certificate->setPartials(['not a partial instance']);
+    }
+
     public function testRenderPartialLoop(): void
     {
-        $data      = [
+        $data     = [
             'course'    => [
                 'name' => 'Test Course'
             ],
-            'student' => [
+            'student'   => [
                 'name' => 'Test Student'
             ],
             'approvals' => [
@@ -96,10 +119,12 @@ class TemplateRenderTest extends TestCase
                 'mt' => ['states' => [['name' => 'Ohio', 'code' => 'OH'], ['name' => 'New Mexico', 'code' => 'NM']]]
             ]
         ];
-        $template  = '{{course.name}} taken by: {{student.name}} {{>pt_partial}} {{>atc_partial}}';
+        $template = '{{course.name}} taken by: {{student.name}} {{>pt_partial}} {{>atc_partial}}';
 
-        $ptPartial = "{{#with approvals.pt}}PT: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
-        $atcPartial = "{{#with approvals.atc}}ATC: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
+        $ptPartial  =
+            "{{#with approvals.pt}}PT: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
+        $atcPartial =
+            "{{#with approvals.atc}}ATC: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
 
         $this->certificate->setTemplate($template);
         $this->certificate->addPartial(new Partial('pt_partial', $ptPartial));
