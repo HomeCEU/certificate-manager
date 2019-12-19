@@ -30,14 +30,39 @@ class Renderer
 
     public function render(array $data): ?string
     {
+        return $this->renderCompiledTemplate($this->compileTemplate(), $data);
+    }
+
+    protected function compileTemplate()
+    {
+        return LightnCandy::compile($this->template, $this->buildOptions());
+    }
+
+    private function renderCompiledTemplate(string $compiledTemplate, array $data): ?string
+    {
+        $file = $this->saveCompiledTemplateToTempFile($compiledTemplate);
+
+        $fn = include($file);
+        unlink($file);
+
+        return trim($fn($data));
+    }
+
+    private function saveCompiledTemplateToTempFile(string $compiledTemplate): string
+    {
+        $fileName = tempnam(sys_get_temp_dir(), 'cert_');
+        file_put_contents($fileName, "<?php {$compiledTemplate}");
+
+        return $fileName;
+    }
+
+    protected function buildOptions(): array
+    {
         $options = ['flags' => $this->flags | Flags::FLAG_ERROR_EXCEPTION];
 
         if (!empty($this->partials)) {
             $options = array_merge($options, ['partials' => $this->partials]);
         }
-        $compiledTemplate = LightnCandy::compile($this->template, $options);
-        $renderer = LightnCandy::prepare($compiledTemplate);
-
-        return trim($renderer($data));
+        return $options;
     }
 }
