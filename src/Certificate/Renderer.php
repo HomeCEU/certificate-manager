@@ -5,6 +5,7 @@ namespace HomeCEU\Certificate;
 
 
 use HomeCEU\Certificate\Exception\NonPartialException;
+use HomeCEU\Certificate\Exception\NoTemplateProvidedException;
 use LightnCandy\Flags;
 use LightnCandy\LightnCandy;
 
@@ -46,6 +47,9 @@ class Renderer
 
     public function render(array $data): ?string
     {
+        if (empty($this->template)) {
+            throw new NoTemplateProvidedException('Cannot render template, no template was provided.');
+        }
         return $this->renderCompiledTemplate($this->compileTemplate(), $data);
     }
 

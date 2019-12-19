@@ -5,6 +5,7 @@ namespace HomeCEU\Certificate\Tests;
 
 
 use HomeCEU\Certificate\Exception\NonPartialException;
+use HomeCEU\Certificate\Exception\NoTemplateProvidedException;
 use HomeCEU\Certificate\Partial;
 use HomeCEU\Certificate\Renderer;
 use HomeCEU\Certificate\RenderHelper;
@@ -93,10 +94,16 @@ class TemplateRenderTest extends TestCase
                 new Partial('partial_test_2', '{{age}}')
         ]);
         $data = [
-            'name' => 'Dan',
-            'age'  => '36'
+            'name' => 'Tester',
+            'age'  => '99'
         ];
-        $this->assertEquals('Dan 36', $this->certificate->render($data));
+        $this->assertEquals("{$data['name']} {$data['age']}", $this->certificate->render($data));
+    }
+
+    public function testNoTemplateProvidedThrowException(): void
+    {
+        $this->expectException(NoTemplateProvidedException::class);
+        $output = $this->certificate->render([]);
     }
 
     public function testSetPartialsWithArrayOfNonPartialsThrowsException(): void
