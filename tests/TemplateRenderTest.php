@@ -4,6 +4,7 @@
 namespace HomeCEU\Certificate\Tests;
 
 
+use HomeCEU\Certificate\Partial;
 use HomeCEU\Certificate\Renderer;
 use HomeCEU\Certificate\RenderHelper;
 use LightnCandy\Flags;
@@ -75,7 +76,7 @@ class TemplateRenderTest extends TestCase
         $partial  = '{{name}}';
 
         $this->certificate->setTemplate($template);
-        $this->certificate->addPartial('partial_test', $partial);
+        $this->certificate->addPartial(new Partial('partial_test', $partial));
 
         $name = 'Jules Winfield';
         $this->assertEquals($name, $this->render(['name' => $name]));
@@ -101,8 +102,8 @@ class TemplateRenderTest extends TestCase
         $atcPartial = "{{#with approvals.atc}}ATC: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
 
         $this->certificate->setTemplate($template);
-        $this->certificate->addPartial('pt_partial', $ptPartial);
-        $this->certificate->addPartial('atc_partial', $atcPartial);
+        $this->certificate->addPartial(new Partial('pt_partial', $ptPartial));
+        $this->certificate->addPartial(new Partial('atc_partial', $atcPartial));
 
         $expected = 'Test Course taken by: Test Student PT: Texas, TX; Florida, FL;';
         $this->assertEquals($expected, $this->certificate->render($data));

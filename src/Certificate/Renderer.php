@@ -18,9 +18,9 @@ class Renderer
         $this->flags = $flags;
     }
 
-    public function addPartial(string $name, string $partial): void
+    public function addPartial(Partial $partial): void
     {
-        $this->partials[$name] = $partial;
+        $this->partials[$partial->name] = $partial->template;
     }
 
     public function setTemplate(string $template): void
