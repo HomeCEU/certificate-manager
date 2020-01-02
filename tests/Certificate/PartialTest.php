@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Certificate\Tests;
+namespace HomeCEU\Tests;
 
 
 use HomeCEU\Certificate\Partial;
