@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests;
+namespace HomeCEU\Tests\Certificate;
 
 
 use HomeCEU\Certificate\Exception\NonPartialException;
