@@ -20,7 +20,8 @@
     },
     "require": {
         "php": "7.3.*",
-        "zordius/lightncandy": "^1.2"
+        "zordius/lightncandy": "^1.2",
+        "ramsey/uuid": "^3.9"
     },
     "config": {
         "platform": {
