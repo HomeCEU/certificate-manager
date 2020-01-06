@@ -12,11 +12,7 @@ class Repository
 
     public function create(string $name, string $template): Template
     {
-        return new Template(
-            Uuid::uuid4()->toString(),
-            $name,
-            $template
-        );
+        return new Template($this->generateId(), $name, $template);
     }
 
     public function save(Template $template): void
@@ -27,5 +23,10 @@ class Repository
     public function findById(string $id): ?Template
     {
         return $this->store[$id] ?? null;
+    }
+
+    protected function generateId(): string
+    {
+        return Uuid::uuid4()->toString();
     }
 }
