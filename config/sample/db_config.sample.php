@@ -2,10 +2,10 @@
 
 return [
     'mysql' => [
-        'host' => getenv('DB_HOST'),
-        'user' => getenv('DB_USER'),
-        'password' => getenv('DB_PASSWORD'),
-        'port' => getenv('DB_PORT'),
-        'database' => getenv('DB_DATABASE'),
+        'host' => getenv('MYSQL_HOST'),
+        'user' => getenv('MYSQL_USER'),
+        'password' => getenv('MYSQL_PASS') ?: '',
+        'port' => getenv('MYSQL_PORT') ?: 3306,
+        'database' => getenv('MYSQL_DATABASE'),
     ]
 ];
