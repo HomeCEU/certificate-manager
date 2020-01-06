@@ -2,7 +2,7 @@ language: php
 os: linux
 
 env:
-  - MYSQL_HOST=127.0.0.1 MYSQL_USR=root
+  - MYSQL_HOST=127.0.0.1 MYSQL_USER=root
 
 php:
   - 7.3
