@@ -4,34 +4,48 @@
 namespace HomeCEU;
 
 
+use HomeCEU\Connection\MysqlPDOConnection;
+
 final class AppSetup
 {
+    const LOCAL_CONFIG_PATH = __DIR__ . '/../config/local/';
+
     public static function copyConfigFiles()
     {
-        self::copyDbConfig();
         self::copyPhpUnitConfig();
+        self::copyDbConfig();
+        self::createDbSchema();
     }
 
     protected static function copyDbConfig()
     {
-        $dbConfigPath = __DIR__ . '/../config/local/';
         $dbConfigSamplePath = __DIR__ . '/../config/sample/';
 
-        if (!is_file($dbConfigPath . 'db_config.php')) {
-            if (!is_dir($dbConfigPath)) {
-                mkdir($dbConfigPath);
+        if (!is_file(self::LOCAL_CONFIG_PATH . 'db_config.php')) {
+            if (!is_dir(self::LOCAL_CONFIG_PATH)) {
+                mkdir(self::LOCAL_CONFIG_PATH);
             }
-            copy($dbConfigSamplePath . 'db_config.sample.php', $dbConfigPath . 'db_config.php');
+            copy($dbConfigSamplePath . 'db_config.sample.php', self::LOCAL_CONFIG_PATH . 'db_config.php');
         }
     }
 
     protected static function copyPhpUnitConfig()
     {
-        $phpUnitConfigPath = __DIR__ . '/../phpunit.xml';
+        $phpUnitConfigPath     = __DIR__ . '/../phpunit.xml';
         $phpUnitDistConfigPath = __DIR__ . '/../phpunit.xml.dist';
 
         if (!is_file($phpUnitConfigPath)) {
             copy($phpUnitDistConfigPath, $phpUnitConfigPath);
         }
+    }
+
+    protected static function createDbSchema()
+    {
+        $sql = file_get_contents(__DIR__ . '/schema.sql');
+
+        $config = include(self::LOCAL_CONFIG_PATH . 'db_config.php');
+        $pdo    = MysqlPDOConnection::createFromConfig($config['mysql']);
+
+        $pdo->exec($sql);
     }
 }
