@@ -4,6 +4,7 @@
 namespace HomeCEU\Tests\Repository;
 
 
+use HomeCEU\Connection\MysqlPDOConnection;
 use HomeCEU\Template\Template;
 use HomeCEU\Template\Repository as TemplateRepository;
 use PHPUnit\Framework\TestCase;
@@ -13,15 +14,28 @@ use PHPUnit\Framework\TestCase;
  * @author Dan McAdams
  * @package HomeCEU\Tests\Integration
  *
- * @group integration
+ * @group functional
  */
 class TemplateStorageTest extends TestCase
 {
     private $repo;
+    private $conn;
 
     protected function setUp(): void
     {
-        $this->repo = new TemplateRepository();
+        $config = include(__DIR__ . '/../../config/local/db_config.php');
+
+        $this->conn = MysqlPDOConnection::createFromConfig($config['mysql']);
+        $this->repo = new TemplateRepository($this->conn);
+
+        $this->conn->beginTransaction();
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->conn->inTransaction()) {
+            $this->conn->rollBack();
+        }
     }
 
     public function testCreate(): void
