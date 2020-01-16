@@ -29,14 +29,16 @@ class Repository
     {
         $sql = <<<SQL
             INSERT INTO template 
-                (template_id, constant, name, body, updated_at)
+                (template_id, constant, name, body, created_on, updated_at)
             VALUES
-                (:templateId, :constant, :name, :body, NOW());            
+                (:templateId, :constant, :name, :body, :createdOn, :updatedOn);
             SQL;
         $st  = $this->conn->prepare($sql);
 
         $st->bindParam('templateId', $template->id);
         $st->bindParam('constant', $template->constant);
+        $st->bindParam('createdOn', $template->createdAt->format('Y-m-d H:i:s'));
+        $st->bindParam('updatedOn', $template->updatedOn->format('Y-m-d H:i:s'));
         $st->bindParam('name', $template->name);
         $st->bindParam('body', $template->body);
 
@@ -56,6 +58,8 @@ class Repository
                                   ->withConstant($result['constant'])
                                   ->withName($result['name'])
                                   ->withBody($result['body'])
+                                  ->withCreatedAt(new \DateTime($result['created_on']))
+                                  ->withUpdatedOn(new \DateTime($result['updated_at']))
                                   ->build();
         }
         return null;

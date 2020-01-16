@@ -53,7 +53,7 @@ class TemplateStorageTest extends TestCase
         $this->assertEquals($body, $savedTemplate->body);
     }
 
-    public function testSaveNewTemplate(): void
+    public function testSaveTemplate(): void
     {
         $constant = "test-name";
         $name = 'Test Name';
@@ -64,7 +64,12 @@ class TemplateStorageTest extends TestCase
         $this->repo->save($template);
         $foundTemplate = $this->repo->findById($template->id);
 
-        $this->assertEquals($template, $foundTemplate);
+        $this->assertEquals($template->id, $foundTemplate->id);
+
+        $this->assertEquals(
+            $template->createdAt->format('Y-m-d H:i:s'),
+            $foundTemplate->createdAt->format('Y-m-d H:i:s')
+        );
     }
 
     public function testTemplateNotFound(): void

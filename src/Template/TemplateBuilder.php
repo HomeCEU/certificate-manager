@@ -10,6 +10,8 @@ class TemplateBuilder
     private $name;
     private $constant;
     private $body;
+    private $createdAt;
+    private $updatedOn;
 
     public static function create(): self
     {
@@ -40,10 +42,22 @@ class TemplateBuilder
         return $this;
     }
 
+    public function withCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function withUpdatedOn(\DateTime $updatedOn): self
+    {
+        $this->updatedOn = $updatedOn;
+        return $this;
+    }
+
     public function build(): Template
     {
-        $createdAt = new \DateTime();
-        $updatedOn = new \DateTime();
+        $createdAt = $this->createdAt ?? new \DateTime();
+        $updatedOn = $this->updatedOn ?? new \DateTime();
 
         return new Template(
             $this->id,
