@@ -6,29 +6,26 @@ namespace HomeCEU\Template;
 
 class Template
 {
-    private $id;
-    private $name;
-    private $template;
+    public $id;
+    public $name;
+    public $body;
+    public $constant;
+    public $createdAt;
+    public $updatedOn;
 
-    public function __construct(string $id, string $name, string $template)
+    public function __construct(
+        string $id,
+        string $constant,
+        string $name,
+        string $body,
+        \DateTime $createdAt,
+        \DateTime $updatedOn = null)
     {
         $this->id = $id;
         $this->name = $name;
-        $this->template = $template;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getRawTemplate(): string
-    {
-        return $this->template;
+        $this->body = $body;
+        $this->constant = $constant;
+        $this->createdAt = $createdAt;
+        $this->updatedOn = $updatedOn;
     }
 }

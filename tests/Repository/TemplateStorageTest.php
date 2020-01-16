@@ -40,27 +40,29 @@ class TemplateStorageTest extends TestCase
 
     public function testCreate(): void
     {
-        $name = 'test_name';
-        $rawTemplate = 'raw template';
+        $constant = "test-name";
+        $name = 'Test Name';
+        $body = 'raw template';
 
-        $savedTemplate = $this->repo->create($name, $rawTemplate);
+        $savedTemplate = $this->repo->create($constant, $name, $body);
 
         $this->assertInstanceOf(Template::class, $savedTemplate);
 
-        $this->assertNotNull($savedTemplate->getId());
-        $this->assertEquals($name, $savedTemplate->getName());
-        $this->assertEquals($rawTemplate, $savedTemplate->getRawTemplate());
+        $this->assertNotNull($savedTemplate->id);
+        $this->assertEquals($name, $savedTemplate->name);
+        $this->assertEquals($body, $savedTemplate->body);
     }
 
-    public function testSave(): void
+    public function testSaveNewTemplate(): void
     {
-        $name = 'test_name';
-        $rawTemplate = 'raw {{ template }}';
+        $constant = "test-name";
+        $name = 'Test Name';
+        $body = 'raw {{ template }}';
 
-        $template = $this->repo->create($name, $rawTemplate);
+        $template = $this->repo->create($constant, $name, $body);
 
         $this->repo->save($template);
-        $foundTemplate = $this->repo->findById($template->getId());
+        $foundTemplate = $this->repo->findById($template->id);
 
         $this->assertEquals($template, $foundTemplate);
     }
