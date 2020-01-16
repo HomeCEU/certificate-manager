@@ -4,14 +4,19 @@
 namespace HomeCEU\Connection;
 
 
+use \PDO;
+
 class MysqlPDOConnection
 {
-    public static function createFromConfig(array $config): \PDO
+    public static function createFromConfig(array $config): PDO
     {
-        return new \PDO(
+        $pdo = new PDO(
             "mysql:host={$config['host']};port={$config['port']};dbname={$config['database']}",
             $config['user'],
             $config['password']
         );
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        return $pdo;
     }
 }
