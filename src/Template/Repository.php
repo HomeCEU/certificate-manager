@@ -15,25 +15,30 @@ class Repository
         $this->conn = $conn;
     }
 
-    public function create(string $name, string $template): Template
+    public function create(string $constant, string $name, string $body): Template
     {
-        return new Template($this->generateId(), $name, $template);
+        return TemplateBuilder::create()
+                              ->withId($this->generateTemplateId())
+                              ->withConstant($constant)
+                              ->withName($name)
+                              ->withBody($body)
+                              ->build();
     }
 
     public function save(Template $template): void
     {
         $sql = <<<SQL
             INSERT INTO template 
-                (template_id, constant, name, body)
+                (template_id, constant, name, body, updated_at)
             VALUES
-                (:templateId, :constant, :name, :body);            
+                (:templateId, :constant, :name, :body, NOW());            
             SQL;
-        $st = $this->conn->prepare($sql);
+        $st  = $this->conn->prepare($sql);
 
-        $st->bindParam('templateId', $template->getId());
-        $st->bindParam('constant', $template->getName());
-        $st->bindParam('name', $template->getName());
-        $st->bindParam('body', $template->getRawTemplate());
+        $st->bindParam('templateId', $template->id);
+        $st->bindParam('constant', $template->constant);
+        $st->bindParam('name', $template->name);
+        $st->bindParam('body', $template->body);
 
         $st->execute();
     }
@@ -46,12 +51,17 @@ class Repository
         $result = $st->fetch(\PDO::FETCH_ASSOC);
 
         if ($result !== false) {
-            return new Template($result['template_id'], $result['name'], $result['body']);
+            return TemplateBuilder::create()
+                                  ->withId($result['template_id'])
+                                  ->withConstant($result['constant'])
+                                  ->withName($result['name'])
+                                  ->withBody($result['body'])
+                                  ->build();
         }
         return null;
     }
 
-    protected function generateId(): string
+    protected function generateTemplateId(): string
     {
         return Uuid::uuid4()->toString();
     }
