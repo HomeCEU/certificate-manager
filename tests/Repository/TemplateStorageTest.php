@@ -67,8 +67,8 @@ class TemplateStorageTest extends TestCase
         $this->assertEquals($template->id, $foundTemplate->id);
 
         $this->assertEquals(
-            $template->createdAt->format('Y-m-d H:i:s'),
-            $foundTemplate->createdAt->format('Y-m-d H:i:s')
+            $template->createdOn->format('Y-m-d H:i:s'),
+            $foundTemplate->createdOn->format('Y-m-d H:i:s')
         );
     }
 

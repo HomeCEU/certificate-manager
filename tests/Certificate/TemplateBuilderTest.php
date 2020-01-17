@@ -20,7 +20,7 @@ class TemplateBuilderTest extends TestCase
                                    ->build();
 
         $this->assertInstanceOf(Template::class, $template);
-        $this->assertInstanceOf(\DateTime::class, $template->createdAt);
+        $this->assertInstanceOf(\DateTime::class, $template->createdOn);
         $this->assertInstanceOf(\DateTime::class, $template->updatedOn);
     }
 }

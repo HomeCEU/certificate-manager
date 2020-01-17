@@ -39,7 +39,7 @@ class Repository
         $st->bindParam('constant', $template->constant);
         $st->bindParam('name', $template->name);
         $st->bindParam('body', $template->body);
-        $st->bindValue('createdOn', $template->createdAt->format('Y-m-d H:i:s'));
+        $st->bindValue('createdOn', $template->createdOn->format('Y-m-d H:i:s'));
         $st->bindValue('updatedOn', $template->updatedOn->format('Y-m-d H:i:s'));
 
         $st->execute();

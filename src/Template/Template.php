@@ -10,7 +10,7 @@ class Template
     public $name;
     public $body;
     public $constant;
-    public $createdAt;
+    public $createdOn;
     public $updatedOn;
 
     public function __construct(
@@ -25,7 +25,7 @@ class Template
         $this->name = $name;
         $this->body = $body;
         $this->constant = $constant;
-        $this->createdAt = $createdAt;
+        $this->createdOn = $createdAt;
         $this->updatedOn = $updatedOn;
     }
 }
