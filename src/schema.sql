@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS cert_manager;
+CREATE DATABASE IF NOT EXISTS cert_manager;
 
 USE cert_manager;
 
