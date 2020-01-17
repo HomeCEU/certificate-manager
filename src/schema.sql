@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS template
     name        VARCHAR(255) NOT NULL,
     body        TEXT         NOT NULL,
     created_on  DATETIME DEFAULT NOW(),
-    updated_at  DATETIME,
+    updated_on  DATETIME,
     created_by  INT,
     type        VARCHAR(255),
 

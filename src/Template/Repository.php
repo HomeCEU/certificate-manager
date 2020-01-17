@@ -29,7 +29,7 @@ class Repository
     {
         $sql = <<<SQL
             INSERT INTO template 
-                (template_id, constant, name, body, created_on, updated_at)
+                (template_id, constant, name, body, created_on, updated_on)
             VALUES
                 (:templateId, :constant, :name, :body, :createdOn, :updatedOn);
             SQL;
@@ -59,7 +59,7 @@ class Repository
                                   ->withName($result['name'])
                                   ->withBody($result['body'])
                                   ->withCreatedAt(new \DateTime($result['created_on']))
-                                  ->withUpdatedOn(new \DateTime($result['updated_at']))
+                                  ->withUpdatedOn(new \DateTime($result['updated_on']))
                                   ->build();
         }
         return null;
