@@ -1,3 +1,7 @@
+CREATE SCHEMA IF NOT EXISTS cert_manager;
+
+USE cert_manager;
+
 CREATE TABLE IF NOT EXISTS template_type
 (
     constant    VARCHAR(255) NOT NULL,
