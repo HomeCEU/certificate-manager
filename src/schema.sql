@@ -23,5 +23,6 @@ CREATE TABLE IF NOT EXISTS template
     created_by  INT,
     type        VARCHAR(255),
 
+    PRIMARY KEY (template_id),
     FOREIGN KEY (type) REFERENCES template_type (constant)
 );
