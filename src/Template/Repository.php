@@ -28,7 +28,7 @@ class Repository
     public function save(Template $template): void
     {
         $sql = <<<SQL
-            INSERT INTO template 
+            REPLACE INTO template 
                 (template_id, constant, name, body, created_on, updated_on)
             VALUES
                 (:templateId, :constant, :name, :body, :createdOn, :updatedOn);

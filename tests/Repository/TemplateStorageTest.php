@@ -18,6 +18,9 @@ use PHPUnit\Framework\TestCase;
  */
 class TemplateStorageTest extends TestCase
 {
+    const NAME         = "test-name";
+    const CONSTANT     = 'Test Name';
+    const BODY = 'raw {{ template }}';
     private $repo;
     private $conn;
 
@@ -40,36 +43,32 @@ class TemplateStorageTest extends TestCase
 
     public function testCreate(): void
     {
-        $constant = "test-name";
-        $name = 'Test Name';
-        $body = 'raw template';
-
-        $savedTemplate = $this->repo->create($constant, $name, $body);
+        $savedTemplate = $this->repo->create(self::CONSTANT, self::NAME, self::BODY);
 
         $this->assertInstanceOf(Template::class, $savedTemplate);
 
         $this->assertNotNull($savedTemplate->id);
-        $this->assertEquals($name, $savedTemplate->name);
-        $this->assertEquals($body, $savedTemplate->body);
+        $this->assertEquals(self::NAME, $savedTemplate->name);
+        $this->assertEquals(self::BODY, $savedTemplate->body);
     }
 
     public function testSaveTemplate(): void
     {
-        $constant = "test-name";
-        $name = 'Test Name';
-        $body = 'raw {{ template }}';
-
-        $template = $this->repo->create($constant, $name, $body);
+        $template = $this->repo->create(self::NAME, self::CONSTANT, self::BODY);
 
         $this->repo->save($template);
         $foundTemplate = $this->repo->findById($template->id);
 
         $this->assertEquals($template->id, $foundTemplate->id);
+        $this->assertEquals(self::BODY, $foundTemplate->body);
 
-        $this->assertEquals(
-            $template->createdOn->format('Y-m-d H:i:s'),
-            $foundTemplate->createdOn->format('Y-m-d H:i:s')
-        );
+        $newBody = 'a new {{ body }}';
+        $foundTemplate->body = $newBody;
+
+        $this->repo->save($foundTemplate);
+
+        $foundTemplate = $this->repo->findById($template->id);
+        $this->assertEquals($newBody, $foundTemplate->body);
     }
 
     public function testTemplateNotFound(): void
