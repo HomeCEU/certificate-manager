@@ -28,7 +28,7 @@ class Repository
     public function save(Template $template): void
     {
         $sql = <<<SQL
-            REPLACE INTO template 
+            REPLACE INTO template
                 (template_id, constant, name, body, created_on, updated_on)
             VALUES
                 (:templateId, :constant, :name, :body, :createdOn, :updatedOn);
@@ -47,7 +47,7 @@ class Repository
 
     public function findById(string $id): ?Template
     {
-        $st = $this->conn->prepare('SELECT * FROM template WHERE template_id = ?');
+        $st = $this->conn->prepare("SELECT * FROM template WHERE template_id = ?");
         $st->execute([$id]);
 
         $result = $st->fetch(\PDO::FETCH_ASSOC);
@@ -63,6 +63,12 @@ class Repository
                                   ->build();
         }
         return null;
+    }
+
+    public function remove(string $id): void
+    {
+        $st = $this->conn->prepare("DELETE FROM template WHERE template_id = ?");
+        $st->execute([$id]);
     }
 
     protected function generateTemplateId(): string

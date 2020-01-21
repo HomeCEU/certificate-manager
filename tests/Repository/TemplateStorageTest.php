@@ -41,39 +41,44 @@ class TemplateStorageTest extends TestCase
         }
     }
 
-    public function testCreate(): void
-    {
-        $savedTemplate = $this->repo->create(self::CONSTANT, self::NAME, self::BODY);
-
-        $this->assertInstanceOf(Template::class, $savedTemplate);
-
-        $this->assertNotNull($savedTemplate->id);
-        $this->assertEquals(self::NAME, $savedTemplate->name);
-        $this->assertEquals(self::BODY, $savedTemplate->body);
-    }
-
     public function testSaveTemplate(): void
     {
-        $template = $this->repo->create(self::NAME, self::CONSTANT, self::BODY);
-
+        $template = $this->createTestTemplate();
         $this->repo->save($template);
-        $foundTemplate = $this->repo->findById($template->id);
-
-        $this->assertEquals($template->id, $foundTemplate->id);
-        $this->assertEquals(self::BODY, $foundTemplate->body);
-
-        $newBody = 'a new {{ body }}';
-        $foundTemplate->body = $newBody;
-
-        $this->repo->save($foundTemplate);
 
         $foundTemplate = $this->repo->findById($template->id);
-        $this->assertEquals($newBody, $foundTemplate->body);
+        $this->assertEquals($template->constant, $foundTemplate->constant);
     }
 
-    public function testTemplateNotFound(): void
+    public function testUpdateTemplate(): void
+    {
+        $template = $this->createTestTemplate();
+        $this->repo->save($template);
+
+        $template->constant = 'new_constant';
+        $this->repo->save($template);
+
+        $this->assertEquals('new_constant', $this->repo->findById($template->id)->constant);
+    }
+
+    public function testRemoveTemplate(): void
+    {
+        $template = $this->createTestTemplate();
+        $this->repo->save($template);
+
+        $this->repo->remove($template->id);
+
+        $this->assertNull($this->repo->findById($template->id));
+    }
+
+    public function testTemplateNotFoundReturnNull(): void
     {
         $template = $this->repo->findById('not_a_real_id');
         $this->assertNull($template);
+    }
+
+    private function createTestTemplate(): Template
+    {
+        return $this->repo->create(self::NAME, self::CONSTANT, self::BODY);
     }
 }
