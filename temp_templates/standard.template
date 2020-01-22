@@ -1,0 +1,47 @@
+<div id="container" class="page">
+    {{> homeceu_logo }}
+
+    <p style="text-align:center;">
+        Certificate #: <span class="char-style-override-6">{{ certificate.number }}</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-3">This is to certify</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-1">
+            {{ student.first_name }} {{ student.last_name }} - {{ student.license_summary }}
+        </span>
+    </p>
+
+    <p>
+        <span>has successfully completed </span>
+        <span class="char-style-override-1">{{ course.hours }} contact hours</span>
+        <span>{{ course.format }} on the topic of:</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-4">{{ course.name }}</span>
+        <br />
+            {{#with course.author_summary }}
+                Course Speakers: {{ course.author_summary }}
+            {{/with}}
+    </p>
+
+    <p>
+        <span>Presented by HomeCEUConnection.com, 5048 Tennyson Pkwy, Suite 200 Plano TX 75024</span>
+    </p>
+
+    <p>
+        {{> admin_signature_image }}
+    </p>
+    <p>
+        Anne Osborn, PT, MPT
+    </p>
+    <p>
+        Owner, HomeCEUConnection.com
+    </p>
+
+
+</div>
