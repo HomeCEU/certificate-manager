@@ -1,0 +1,41 @@
+<div id="container" class="page">
+
+    <p class="header_images">
+        {{> homeceu_logo }}
+    </p>
+
+    <p style="text-align:center;">
+        Certificate #: <span class="char-style-override-6">{{ certificate.number }}</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-3">This is to acknowledge that </span>
+        <span class="char-style-override-1">{{ student.first_name }} {{ student.last_name }}</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-3">Has completed </span>
+        <span class="char-style-override-1">{{ course.name }}</span>
+    </p>
+
+    <p class="char-style-override-3">
+        a {{ course.hours }} hour development and/or training program
+    </p>
+    <p>
+        <span class="char-style-override-3"> via </span>
+        <span class="char-style-override-1">{{ completion_method }}</span>
+    </p>
+
+    <p>
+        <span class="char-style-override-3"> on </span>
+        <span class="char-style-override-1">{{ completion_date }}</span>
+    </p>
+
+    <p>
+        {{ supervisor.first_name }} {{ supervisor.last_name }} has indicated completion for this user.
+    </p>
+
+    <p>
+        The awarding of this certificate does not award continuing education hours / credit.
+    </p>
+</div>
