@@ -15,8 +15,16 @@ class Renderer
     private $template;
     /** @var Partial[] */
     private $partials = [];
+    /** @var Helper[] */
+    private $helpers = [];
     /** @var int */
     private $flags = Flags::FLAG_HANDLEBARS;
+
+    public function __construct()
+    {
+        $this->resetPartials();
+        $this->resetHelpers();
+    }
 
     public function setFlags(int $flags): void
     {
@@ -25,18 +33,27 @@ class Renderer
 
     public function addPartial(Partial $partial): void
     {
-        $this->partials[] = $partial;
+        $this->partials[$partial->name] = $partial->template;
     }
 
     public function setPartials(array $partials): void
     {
-        $this->clearPartials();
-
+        $this->resetPartials();
         foreach ($partials as $partial) {
-            if (!($partial instanceof Partial)) {
-                throw new NonPartialException("You must provide an array of Partial(s)");
-            }
             $this->addPartial($partial);
+        }
+    }
+
+    public function addHelper(Helper $helper): void
+    {
+        $this->helpers[$helper->name] = $helper->func;
+    }
+
+    public function setHelpers(array $helpers): void
+    {
+        $this->resetHelpers();
+        foreach ($helpers as $helper) {
+            $this->addHelper($helper);
         }
     }
 
@@ -78,25 +95,27 @@ class Renderer
 
     protected function buildOptions(): array
     {
-        $options = ['flags' => $this->flags | Flags::FLAG_ERROR_EXCEPTION];
-
-        if (!empty($this->partials)) {
-            $options = array_merge($options, $this->buildPartialsOption());
-        }
-        return $options;
+        return [
+            'flags' => $this->flags | Flags::FLAG_ERROR_EXCEPTION,
+            'helpers' => $this->helpers,
+            'partials' => $this->partials
+        ];
     }
 
-    private function buildPartialsOption()
-    {
-        $partials = [];
-        foreach ($this->partials as $partial) {
-            $partials[$partial->name] = $partial->template;
-        }
-        return ['partials' => $partials];
-    }
-
-    private function clearPartials(): void
+    private function resetPartials(): void
     {
         $this->partials = [];
+    }
+
+    private function resetHelpers(): void
+    {
+        $this->helpers = [];
+        $this->setDefaultHelpers();
+    }
+
+    private function setDefaultHelpers(): void
+    {
+        $ifComparisonHelper = TemplateHelpers::getIfComparisonHelper();
+        $this->helpers[$ifComparisonHelper->name] = $ifComparisonHelper->func;
     }
 }

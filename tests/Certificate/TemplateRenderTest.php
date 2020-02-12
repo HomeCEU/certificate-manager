@@ -6,24 +6,18 @@ namespace HomeCEU\Tests\Certificate;
 
 use HomeCEU\Certificate\Exception\NonPartialException;
 use HomeCEU\Certificate\Exception\NoTemplateProvidedException;
+use HomeCEU\Certificate\Helper;
 use HomeCEU\Certificate\Partial;
 use HomeCEU\Certificate\Renderer;
 use HomeCEU\Certificate\RenderHelper;
 use LightnCandy\Flags;
 use PHPUnit\Framework\TestCase;
 
-class TemplateRenderTest extends TestCase
+class TemplateRenderTest extends RenderTestCase
 {
-    private $certificate;
-
-    protected function setUp(): void
-    {
-        $this->certificate = new Renderer();
-    }
-
     public function testSimpleString(): void
     {
-        $this->certificate->setTemplate("Hello, {{ name }}!");
+        $this->renderer->setTemplate("Hello, {{ name }}!");
 
         $name = 'Dan';
         $this->assertEquals("Hello, {$name}!", $this->render(['name' => $name]));
@@ -31,20 +25,20 @@ class TemplateRenderTest extends TestCase
 
     public function testLoop(): void
     {
-        $names    = ['test_1', 'test_2', 'test_3'];
+        $names = ['test_1', 'test_2', 'test_3'];
         $template = '{{#each names}}{{this}}{{/each}}';
 
-        $this->certificate->setTemplate($template);
+        $this->renderer->setTemplate($template);
 
         $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
     }
 
     public function testLoopWithNamedValue(): void
     {
-        $states   = [['name' => 'Texas'], ['name' => 'Florida'], ['name' => 'New Mexico']];
+        $states = [['name' => 'Texas'], ['name' => 'Florida'], ['name' => 'New Mexico']];
         $template = '{{#each states as |state|}}{{state.name}}{{/each}}';
 
-        $this->certificate->setTemplate($template);
+        $this->renderer->setTemplate($template);
 
         $this->assertEquals(implode('', array_column($states, 'name')), $this->render(['states' => $states]));
     }
@@ -52,7 +46,7 @@ class TemplateRenderTest extends TestCase
     public function testExtractPartials(): void
     {
         $template = 'some other text {{> partial_one }} {{ not a partial }} {{> partial_two }} some text';
-        $this->certificate->setTemplate($template);
+        $this->renderer->setTemplate($template);
 
         $matches = RenderHelper::extractExpectedPartialsFromTemplate($template);
         $this->assertEquals(['partial_one', 'partial_two'], $matches);
@@ -60,25 +54,25 @@ class TemplateRenderTest extends TestCase
 
     public function testSetFlags(): void
     {
-        $names    = ['test_1', 'test_2', 'test_3'];
+        $names = ['test_1', 'test_2', 'test_3'];
         $template = '{{#each names}}{{this}}{{/each}}';
 
-        $this->certificate->setTemplate($template);
-        $this->certificate->setFlags(Flags::FLAG_BESTPERFORMANCE);
+        $this->renderer->setTemplate($template);
+        $this->renderer->setFlags(Flags::FLAG_BESTPERFORMANCE);
 
         $this->assertEquals('', $this->render(['names' => $names]));
 
-        $this->certificate->setFlags(Flags::FLAG_HANDLEBARSJS);
+        $this->renderer->setFlags(Flags::FLAG_HANDLEBARSJS);
         $this->assertEquals(implode('', $names), $this->render(['names' => $names]));
     }
 
     public function testRenderPartial(): void
     {
         $template = '{{> partial_test }}';
-        $partial  = '{{name}}';
+        $partial = '{{name}}';
 
-        $this->certificate->setTemplate($template);
-        $this->certificate->addPartial(new Partial('partial_test', $partial));
+        $this->renderer->setTemplate($template);
+        $this->renderer->addPartial(new Partial('partial_test', $partial));
 
         $name = 'Jules Winfield';
         $this->assertEquals($name, $this->render(['name' => $name]));
@@ -88,33 +82,27 @@ class TemplateRenderTest extends TestCase
     {
         $template = '{{> partial_test_1 }} {{> partial_test_2}}';
 
-        $this->certificate->setTemplate($template);
-        $this->certificate->setPartials([
-                new Partial('partial_test_1', '{{name}}'),
-                new Partial('partial_test_2', '{{age}}')
+        $this->renderer->setTemplate($template);
+        $this->renderer->setPartials([
+            new Partial('partial_test_1', '{{name}}'),
+            new Partial('partial_test_2', '{{age}}')
         ]);
         $data = [
             'name' => 'Tester',
             'age'  => '99'
         ];
-        $this->assertEquals("{$data['name']} {$data['age']}", $this->certificate->render($data));
+        $this->assertEquals("{$data['name']} {$data['age']}", $this->renderer->render($data));
     }
 
     public function testNoTemplateProvidedThrowException(): void
     {
         $this->expectException(NoTemplateProvidedException::class);
-        $this->certificate->render([]);
-    }
-
-    public function testSetPartialsWithArrayOfNonPartialsThrowsException(): void
-    {
-        $this->expectException(NonPartialException::class);
-        $this->certificate->setPartials(['not a partial instance']);
+        $this->renderer->render([]);
     }
 
     public function testRenderPartialLoop(): void
     {
-        $data     = [
+        $data = [
             'course'    => [
                 'name' => 'Test Course'
             ],
@@ -128,21 +116,21 @@ class TemplateRenderTest extends TestCase
         ];
         $template = '{{course.name}} taken by: {{student.name}} {{>pt_partial}} {{>atc_partial}}';
 
-        $ptPartial  =
+        $ptPartial =
             "{{#with approvals.pt}}PT: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
         $atcPartial =
             "{{#with approvals.atc}}ATC: {{#each states as |state|}}{{ state.name }}, {{ state.code }}; {{/each}}{{/with}}";
 
-        $this->certificate->setTemplate($template);
-        $this->certificate->addPartial(new Partial('pt_partial', $ptPartial));
-        $this->certificate->addPartial(new Partial('atc_partial', $atcPartial));
+        $this->renderer->setTemplate($template);
+        $this->renderer->addPartial(new Partial('pt_partial', $ptPartial));
+        $this->renderer->addPartial(new Partial('atc_partial', $atcPartial));
 
         $expected = 'Test Course taken by: Test Student PT: Texas, TX; Florida, FL;';
-        $this->assertEquals($expected, $this->certificate->render($data));
+        $this->assertEquals($expected, $this->renderer->render($data));
     }
 
     protected function render(array $data): ?string
     {
-        return $this->certificate->render($data);
+        return $this->renderer->render($data);
     }
 }
