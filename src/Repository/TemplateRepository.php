@@ -1,20 +1,15 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Template;
+namespace HomeCEU\Repository;
 
 
+use HomeCEU\Template\Template;
+use HomeCEU\Template\TemplateBuilder;
 use Ramsey\Uuid\Uuid;
 
-class Repository
+class TemplateRepository extends Repository
 {
-    private $conn;
-
-    public function __construct(\PDO $conn)
-    {
-        $this->conn = $conn;
-    }
-
     public function create(string $constant, string $name, string $body): Template
     {
         return TemplateBuilder::create()
