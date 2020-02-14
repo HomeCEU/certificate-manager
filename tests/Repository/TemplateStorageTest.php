@@ -4,10 +4,8 @@
 namespace HomeCEU\Tests\Repository;
 
 
-use HomeCEU\Connection\MysqlPDOConnection;
+use HomeCEU\Repository\TemplateRepository;
 use HomeCEU\Template\Template;
-use HomeCEU\Template\Repository as TemplateRepository;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class TemplateStorageTest
@@ -16,29 +14,18 @@ use PHPUnit\Framework\TestCase;
  *
  * @group functional
  */
-class TemplateStorageTest extends TestCase
+class TemplateStorageTest extends RepositoryTestCase
 {
     const NAME         = "test-name";
     const CONSTANT     = 'Test Name';
     const BODY = 'raw {{ template }}';
-    private $repo;
-    private $conn;
+
+    protected $repo;
 
     protected function setUp(): void
     {
-        $config = include(__DIR__ . '/../../config/local/db_config.php');
-
-        $this->conn = MysqlPDOConnection::createFromConfig($config['mysql']);
+        parent::setUp();
         $this->repo = new TemplateRepository($this->conn);
-
-        $this->conn->beginTransaction();
-    }
-
-    protected function tearDown(): void
-    {
-        if ($this->conn->inTransaction()) {
-            $this->conn->rollBack();
-        }
     }
 
     public function testSaveTemplate(): void
