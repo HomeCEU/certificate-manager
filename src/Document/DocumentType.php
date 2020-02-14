@@ -10,7 +10,7 @@ class DocumentType
     public $name;
     public $description;
 
-    public function __construct(string $constant, string $name, string $description)
+    public function __construct(string $constant, string $name, string $description = '')
     {
         $this->constant = $constant;
         $this->name = $name;
