@@ -6,9 +6,9 @@
         </td>
         <td width="75%">
             <span>
-            {{~#each pt_pta as |approval|~}}
-                {{ approval.state }}: {{ approval.category }} {{ approval.status }} {{ approval.code }} {{ approval.statement }}{{#unless @last}};{{/unless}}
-            {{~/each~}}
+            {{#each pt_pta as |approval|~}}
+                {{ approval.state }}: {{ approval.category }} {{ approval.status }} {{ approval.code }} {{ approval.statement }}{{#unless @last}}; {{/unless}}
+            {{~/each}}
             </span>
         </td>
     </tr>

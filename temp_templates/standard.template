@@ -24,8 +24,8 @@
     <p>
         <span class="char-style-override-4">{{ course.name }}</span>
         <br />
-            {{#with course.author_summary }}
-                Course Speakers: {{ course.author_summary }}
+            {{#with course.author }}
+                Course Speakers: {{ course.author.summary }}
             {{/with}}
     </p>
 
