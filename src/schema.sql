@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS cert_manager;
 
 USE cert_manager;
 
-CREATE TABLE IF NOT EXISTS template_type
+CREATE TABLE IF NOT EXISTS document_type
 (
     constant    VARCHAR(255) NOT NULL,
     name        VARCHAR(255) NOT NULL,
@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS template_type
 
     PRIMARY KEY (constant)
 );
-
 
 CREATE TABLE IF NOT EXISTS template
 (
@@ -24,5 +23,15 @@ CREATE TABLE IF NOT EXISTS template
     type        VARCHAR(255),
 
     PRIMARY KEY (template_id),
-    FOREIGN KEY (type) REFERENCES template_type (constant)
+    FOREIGN KEY (type) REFERENCES document_type (constant)
+);
+
+CREATE TABLE IF NOT EXISTS document_data
+(
+    data_key VARCHAR(255) NOT NULL,
+    dock_type VARCHAR(255) NOT NULL,
+    data TEXT,
+
+    PRIMARY KEY (dock_type, data_key),
+    FOREIGN KEY (dock_type) REFERENCES document_type (constant)
 );
