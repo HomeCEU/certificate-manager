@@ -16,9 +16,11 @@ class DocumentDataRepository extends Repository
                 SQL;
         $st = $this->conn->prepare($sql);
 
+        $json = json_encode($data->data);
+
         $st->bindParam('data_key', $data->key);
         $st->bindParam('document_type', $data->type);
-        $st->bindParam('data', json_encode($data->data));
+        $st->bindParam('data', $json);
 
         $st->execute();
     }
