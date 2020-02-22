@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests\Certificate;
+namespace HomeCEU\Tests\DocumentRender;
 
 
-use HomeCEU\Certificate\Exception\NonPartialException;
-use HomeCEU\Certificate\Exception\NoTemplateProvidedException;
-use HomeCEU\Certificate\Helper;
-use HomeCEU\Certificate\Partial;
-use HomeCEU\Certificate\Renderer;
-use HomeCEU\Certificate\RenderHelper;
+use HomeCEU\Render\Exception\NonPartialException;
+use HomeCEU\Render\Exception\NoTemplateProvidedException;
+use HomeCEU\Render\Helper;
+use HomeCEU\Render\Partial;
+use HomeCEU\Render\Renderer;
+use HomeCEU\Render\RenderHelper;
 use LightnCandy\Flags;
 use PHPUnit\Framework\TestCase;
 

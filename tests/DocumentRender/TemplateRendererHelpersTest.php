@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests\Certificate;
+namespace HomeCEU\Tests\DocumentRender;
 
 
-use HomeCEU\Certificate\Helper;
+use HomeCEU\Render\Helper;
 
 class TemplateRendererHelpersTest extends RenderTestCase
 {
     private $templateWithIfHelper = '{{if status "test" "passed"}}
-                                     {{if status "test_two" "will not show"}}';
+                                     {{if status "test_two" "should not show"}}';
 
     private $templateWithUpperHelper = '{{upper status}}';
 

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests\Certificate;
+namespace HomeCEU\Tests\DocumentRender;
 
 
-use HomeCEU\Certificate\Partial;
+use HomeCEU\Render\Partial;
 use PHPUnit\Framework\TestCase;
 
 class PartialTest extends TestCase

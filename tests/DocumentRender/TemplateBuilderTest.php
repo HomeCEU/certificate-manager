@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests\Certificate;
+namespace HomeCEU\Tests\DocumentRender;
 
 
-use HomeCEU\Template\Template;
-use HomeCEU\Template\TemplateBuilder;
+use HomeCEU\Render\Template;
+use HomeCEU\Render\TemplateBuilder;
 use PHPUnit\Framework\TestCase;
 
 class TemplateBuilderTest extends TestCase

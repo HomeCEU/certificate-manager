@@ -1,11 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Certificate;
+namespace HomeCEU\Render;
 
 
-use HomeCEU\Certificate\Exception\NonPartialException;
-use HomeCEU\Certificate\Exception\NoTemplateProvidedException;
+use HomeCEU\Render\Exception\NoTemplateProvidedException;
 use LightnCandy\Flags;
 use LightnCandy\LightnCandy;
 

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace HomeCEU\Tests\Certificate;
+namespace HomeCEU\Tests\DocumentRender;
 
 
-use HomeCEU\Certificate\Renderer;
+use HomeCEU\Render\Renderer;
 use PHPUnit\Framework\TestCase;
 
 class RenderTestCase extends TestCase

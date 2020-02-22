@@ -4,8 +4,8 @@
 namespace HomeCEU\Repository;
 
 
-use HomeCEU\Template\Template;
-use HomeCEU\Template\TemplateBuilder;
+use HomeCEU\Render\Template;
+use HomeCEU\Render\TemplateBuilder;
 use Ramsey\Uuid\Uuid;
 
 class TemplateRepository extends Repository

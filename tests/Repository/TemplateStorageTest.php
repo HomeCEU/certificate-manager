@@ -5,7 +5,7 @@ namespace HomeCEU\Tests\Repository;
 
 
 use HomeCEU\Repository\TemplateRepository;
-use HomeCEU\Template\Template;
+use HomeCEU\Render\Template;
 
 /**
  * Class TemplateStorageTest
