@@ -4,9 +4,9 @@
 namespace HomeCEU\Render;
 
 
-class TemplateHelpers
+class Helpers
 {
-    public static function getIfComparisonHelper(): Helper
+    public static function ifComparisonHelper(): Helper
     {
         return new Helper('if', function ($arg1, $arg2, $return) {
             return $arg1 == $arg2 ? $return : '';

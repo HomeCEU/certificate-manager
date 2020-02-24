@@ -13,6 +13,6 @@ class RenderTestCase extends TestCase
 
     protected function setUp(): void
     {
-        $this->renderer = new Renderer();
+        $this->renderer = Renderer::create();
     }
 }

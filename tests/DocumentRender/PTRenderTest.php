@@ -55,7 +55,8 @@ class PTRenderTest extends TestCase
             'pt_pta',
             file_get_contents(__DIR__ . '/../../temp_templates/accreditation_partials/pt_pta.template')
         );
-        $certificate = new Renderer();
+        $certificate = Renderer::create();
+
         $certificate->setTemplate('{{> pt_pta }}');
         $certificate->addPartial($partial);
 
